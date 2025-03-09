@@ -18,8 +18,11 @@ class Triangle(Shape):
         return self.a + self.b + self.c
 
     def area(self) -> float:
-        s = self.perimeter() / 2
-        return math.sqrt(s * (s - self.a) * (s - self.b) * (s - self.c))
+        p = self.perimeter() / 2
+        expr = p * (p - self.a) * (p - self.b) * (p - self.c)
+        if expr < 0:
+            return 0
+        return expr**0.5
 
 
 class Rectangle(Shape):
@@ -42,7 +45,10 @@ class Trapeze(Shape):
 
     def area(self) -> float:
         s = (self.a + self.b + self.c + self.d) / 2
-        h = (2 / (self.a - self.b)) * math.sqrt(s * (s - self.a) * (s - self.b) * (s - self.c) * (s - self.d))
+        expr = s * (s - self.a) * (s - self.b) * (s - self.c) * (s - self.d)
+        if expr < 0 or self.a == self.b:
+            return 0
+        h = (2 / abs(self.a - self.b)) * math.sqrt(expr)
         return 0.5 * (self.a + self.b) * h
 
 
@@ -62,10 +68,10 @@ class Circle(Shape):
         self.r = r
 
     def perimeter(self) -> float:
-        return 2 * math.pi * self.r
+        return float(2 * math.pi * self.r)
 
     def area(self) -> float:
-        return math.pi * self.r ** 2
+        return float(math.pi * self.r ** 2)
 
 
 def parse_shape(line: str) -> Shape:
@@ -94,15 +100,17 @@ def find_max_shapes(filename: str):
 
     return max_area_shape, max_perimeter_shape
 
-
+print('file 1')
 file_name = "input01.txt"
 max_area, max_perimeter = find_max_shapes(file_name)
 print(f"Фігура з найбільшою площею: {type(max_area).__name__}, площа = {max_area.area()}")
 print(f"Фігура з найбільшим периметром: {type(max_perimeter).__name__}, периметр = {max_perimeter.perimeter()}")
+print('file 2')
 file_name = "input02.txt"
 max_area, max_perimeter = find_max_shapes(file_name)
 print(f"Фігура з найбільшою площею: {type(max_area).__name__}, площа = {max_area.area()}")
 print(f"Фігура з найбільшим периметром: {type(max_perimeter).__name__}, периметр = {max_perimeter.perimeter()}")
+print('file 3')
 file_name = "input03.txt"
 max_area, max_perimeter = find_max_shapes(file_name)
 print(f"Фігура з найбільшою площею: {type(max_area).__name__}, площа = {max_area.area()}")
